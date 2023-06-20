@@ -1,0 +1,41 @@
+# Menentukan versi API Kubernetes yang digunakan
+apiVersion: v1
+#  Menentukan jenis objek yang akan dibuat
+kind: PersistentVolume
+# Menentukan metadata dari objek yang akan dibuat
+metadata:
+  name: mongo-pv
+  labels:
+    type: local
+spec:
+  # Menentukan storage class name
+  storageClassName: manual
+  # Menentukan kapasitas storage
+  capacity:
+    storage: 1Gi
+  # Menentukan akses mode
+  accessModes:
+    - ReadWriteOnce
+  # Menentukan host path
+  hostPath:
+    path: '/data/db'
+---
+# Menentukan versi API Kubernetes yang digunakan
+apiVersion: v1
+#  Menentukan jenis objek yang akan dibuat
+kind: PersistentVolumeClaim
+# Menentukan metadata dari objek yang akan dibuat
+metadata:
+  name: mongo-pv-claim
+  labels:
+    app: mongo
+spec:
+  # Menentukan storage class name
+  storageClassName: manual
+  # Menentukan akses mode
+  accessModes:
+    - ReadWriteOnce
+  # Menentukan kapasitas storage
+  resources:
+    requests:
+      storage: 1Gi

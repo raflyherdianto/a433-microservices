@@ -1,0 +1,19 @@
+# Menentukan versi API yang digunakan
+apiVersion: v1
+#  Menentukan jenis objek yang akan dibuat
+kind: Service
+# Menentukan metadata dari objek yang akan dibuat
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+# Menentukan spesifikasi dari objek yang akan dibuat
+spec:
+  # Menentukan port yang akan digunakan
+  ports:
+    - port: 27017
+  # Menentukan selektor yang akan digunakan
+  selector:
+    app: mongo
+  # Menentukan tipe clusterIP yang akan digunakan
+  clusterIP: None

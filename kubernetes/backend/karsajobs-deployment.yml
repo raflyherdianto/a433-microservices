@@ -1,0 +1,56 @@
+# Menentukan versi API Kubernetes yang digunakan
+apiVersion: apps/v1
+#  Menentukan jenis objek yang akan dibuat
+kind: Deployment
+# Menentukan metadata dari objek yang akan dibuat
+metadata:
+  # Menentukan nama dari objek yang akan dibuat
+  name: app-backend
+  # Menentukan label dari objek yang akan dibuat
+  labels:
+    app: backend
+# Menentukan spesifikasi dari objek yang akan dibuat
+spec:
+  # Spesifikasikan jumlah replika yang akan dibuat
+  replicas: 1
+  # Menentukan selector yang akan digunakan
+  selector:
+    # Menentukan label yang akan digunakan
+    matchLabels:
+      app: backend
+  # Menentukan template yang akan digunakan
+  template:
+    # Menentukan metadata dari template yang akan digunakan
+    metadata:
+      labels:
+        app: backend
+    spec:
+      # Menentukan container yang akan digunakan
+      containers:
+        # Menentukan nama container yang akan digunakan
+        - name: karsajobs
+          # Menentukan image yang akan digunakan
+          image: raflyherdianto25/karsajobs:latest
+          # Menentukan kebijakan pull image
+          imagePullPolicy: IfNotPresent
+          # Menentukan port yang akan digunakan
+          ports:
+            - containerPort: 8080
+          # Menentukan environment variable yang akan digunakan
+          env:
+            - name: APP_PORT
+              value: '8080'
+            - name: MONGO_HOST
+              value: 'mongo'
+            - name: MONGO_USER
+              valueFrom:
+                # Mendapatkan value dari mongo-secret
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_ROOT_USERNAME
+            - name: MONGO_PASS
+              valueFrom:
+                # Mendapatkan value dari mongo-secret
+                secretKeyRef:
+                  name: mongo-secret
+                  key: MONGO_ROOT_PASSWORD 

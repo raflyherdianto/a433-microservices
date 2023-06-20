@@ -1,0 +1,68 @@
+# Menentukan versi API yang digunakan
+apiVersion: apps/v1
+#  Menentukan jenis objek yang akan dibuat
+kind: StatefulSet
+# Menentukan metadata dari objek yang akan dibuat
+metadata:
+  name: mongo
+  labels:
+    app: mongo
+# Menentukan spesifikasi dari objek yang akan dibuat
+spec:
+  selector:
+    # Menentukan label yang akan digunakan
+    matchLabels:
+      app: mongo
+  serviceName: mongo
+  # Menentukan jumlah replika yang akan dibuat
+  replicas: 1
+  # Menentukan waktu yang dibutuhkan untuk membuat pod baru
+  minReadySeconds: 10
+  # Menentukan template yang akan digunakan
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      # Menentukan waktu setelah pod akan dihapus
+      terminationGracePeriodSeconds: 10
+      # Menentukan container yang akan digunakan
+      containers:
+        # Menentukan nama container yang akan digunakan
+        - name: mongo
+          # Menentukan image yang akan digunakan
+          image: mongo:3
+          # Menentukan kebijakan pull image
+          imagePullPolicy: IfNotPresent
+          # Menentukan environment variable yang akan digunakan
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME_FILE
+              value: /etc/mongo-credentials/MONGO_ROOT_USERNAME
+            - name: MONGO_INITDB_ROOT_PASSWORD_FILE
+              value: /etc/mongo-credentials/MONGO_ROOT_PASSWORD
+          # Menentukan port yang akan digunakan
+          ports:
+            - containerPort: 27017
+              name: mongo
+          # Menentukan volume yang akan digunakan
+          volumeMounts:
+            - name: mongo-persistent-storage
+              mountPath: /data/db
+            - name: mongo-configmap
+              mountPath: /config
+            - name: mongo-secret
+              mountPath: /etc/mongo-credentials
+      # Menentukan volume yang akan digunakan
+      volumes:
+        - name: mongo-persistent-storage
+          persistentVolumeClaim:
+            claimName: mongo-pv-claim
+        - name: mongo-configmap
+          configMap:
+            name: mongo-configmap
+            items:
+              - key: mongo.conf
+                path: mongo.conf
+        - name: mongo-secret
+          secret:
+            secretName: mongo-secret

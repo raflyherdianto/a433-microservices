@@ -1,0 +1,12 @@
+# Menentukan versi API Kubernetes yang digunakan
+apiVersion: v1
+#  Menentukan jenis objek yang akan dibuat
+kind: ConfigMap
+# Menentukan metadata dari objek yang akan dibuat
+metadata:
+  name: mongo-configmap
+data:
+  # Menentukan isi dari file mongo.conf
+  mongo.conf: |
+    storage:
+      dbpath: /data/db

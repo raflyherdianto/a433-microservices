@@ -1,0 +1,21 @@
+# Menentukan versi API Kubernetes yang digunakan
+apiVersion: v1
+#  Menentukan jenis objek yang akan dibuat
+kind: Service
+# Menentukan metadata dari objek yang akan dibuat
+metadata:
+  # Menentukan nama dari objek yang akan dibuat
+  name: frontend
+  # Menentukan label dari objek yang akan dibuat
+  labels:
+    app: frontend
+# Menentukan spesifikasi dari objek yang akan dibuat
+spec:
+  # Menentukan port yang akan digunakan
+  ports:
+    - port: 8000
+  # Menentukan selektor yang akan digunakan
+  selector:
+    app: frontend
+  # Menentukan tipe service yang akan digunakan
+  type: NodePort

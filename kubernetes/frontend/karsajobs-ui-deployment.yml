@@ -1,0 +1,42 @@
+# Menentukan versi API Kubernetes yang digunakan
+apiVersion: apps/v1
+#  Menentukan jenis objek yang akan dibuat
+kind: Deployment
+# Menentukan metadata dari objek yang akan dibuat
+metadata:
+  # Menentukan nama dari objek yang akan dibuat
+  name: app-frontend
+  # Menentukan label dari objek yang akan dibuat
+  labels:
+    app: frontend
+# Menentukan spesifikasi dari objek yang akan dibuat
+spec:
+  # Menentukan jumlah replika yang akan dibuat
+  replicas: 1
+  # Menentukan selector yang akan digunakan
+  selector:
+    # Menentukan label yang akan digunakan
+    matchLabels:
+      app: frontend
+  # Menentukan template yang akan digunakan
+  template:
+    # Menentukan metadata dari template yang akan digunakan
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      # Menentukan container yang akan digunakan
+      containers:
+          # Menentukan nama container yang akan digunakan
+        - name: karsajobs-ui
+          # Menentukan nama image yang akan digunakan
+          image: raflyherdianto25/karsajobs-ui:latest
+          # Menentukan kebijakan pull image
+          imagePullPolicy: IfNotPresent
+          # Menentukan port yang akan digunakan
+          ports:
+            - containerPort: 8000
+          # Menentukan environment variable yang akan digunakan
+          env:
+            - name: VUE_APP_BACKEND
+              value: http://10.108.89.161:31362
